@@ -6,6 +6,7 @@ const router = express.Router()
 router.post('/',
     async (req, res) => {
         try {
+            console.log(req.body)
             // CREATING ORDER
             const createdOrder = await orderModel.create({
                 ...req.body,
@@ -28,6 +29,7 @@ router.get('/',
     async (req, res) => {
         try {
             const ordersList = await orderModel.find({ user: req.user })
+            // console.log(ordersList)
             res.status(200).json(ordersList)
         }
         catch (error) {
