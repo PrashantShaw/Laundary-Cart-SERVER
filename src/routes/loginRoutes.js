@@ -66,16 +66,22 @@ router.post('/register',
 
 router.post('/login', async (req, res) => {
     try {
-        const { phoneNo, email, password } = req.body
-        const user = await userModel.findOne({
-            $or: [{ phoneNo: phoneNo }, { email: email }]
-        })
+        const { phoneOrEmail, password } = req.body
+        // console.log(phoneOrEmail, password)
+        let user;
+        if (typeof phoneOrEmail === Number) {
+            user = await userModel.findOne({ phoneNo: phoneOrEmail })
+        }
+        else {
+            user = await userModel.findOne({ email: phoneOrEmail })
+
+        }
         if (!user) {
             return res.status(404).json({ message: "Invalid Credentials" })
         }
         bcrypt.compare(password, user.password, (err, result) => {
             if (err) {
-                return res.status(404).json({ message: err.message })
+                return res.status(500).json({ message: err.message })
             }
             if (result) {
                 const token = jwt.sign(
