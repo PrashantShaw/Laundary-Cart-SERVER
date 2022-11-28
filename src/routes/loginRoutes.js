@@ -8,7 +8,7 @@ const router = express.Router()
 const secretKey = 'this-is-a-secret-key'
 
 router.post('/register',
-    body('name').isAlpha(),
+    body('name').isString(),
     body('email').isEmail(),
     body('phoneNo').isNumeric().isLength({ min: 10, max: 10 }),
     body('state').isString(),
@@ -18,6 +18,7 @@ router.post('/register',
     body('password').isAlpha(),
     async (req, res) => {
         try {
+            console.log(req.body)
             // CHECKING FOR ANY VALIDATION ERRORS
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
