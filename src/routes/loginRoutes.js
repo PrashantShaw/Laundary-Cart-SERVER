@@ -15,7 +15,7 @@ router.post('/register',
     body('district').isString(),
     body('address').isString(),
     body('pincode').isNumeric(),
-    body('password').isAlpha(),
+    body('password').isLength({min: 1}),
     async (req, res) => {
         try {
             console.log(req.body)
